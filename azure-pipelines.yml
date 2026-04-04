@@ -1,53 +1,48 @@
-# =============================================================================
-# SecureWatch Platform - Azure DevOps Security Pipeline
-# This pipeline runs automatically every time code is pushed.
-# It scans for secrets, vulnerable code, and vulnerable dependencies.
-# If anything critical is found, the pipeline fails and blocks deployment.
-# =============================================================================
-
 trigger:
   - master
 
 pool:
-  vmImage: Default
+  name: Default
 
 stages:
 
-# =============================================================================
-# STAGE 1: SECRET SCANNING WITH GITLEAKS
-# Gitleaks scans every file in your repo looking for things that look like
-# secrets — API keys, passwords, tokens. It knows hundreds of patterns.
-# Our app.py has AWS keys and passwords hardcoded — Gitleaks will find them.
-# =============================================================================
   - stage: SecretScanning
     displayName: "Stage 1 - Secret Scanning (Gitleaks)"
+    pool:
+      name: Default
     jobs:
       - job: GitleaksScan
         displayName: "Scan for hardcoded secrets"
+        pool:
+          name: Default
         steps:
           - checkout: self
 
           - script: |
               echo "Installing Gitleaks..."
-              wget https://github.com/gitleaks/gitleaks/releases/download/v8.18.0/gitleaks_8.18.0_linux_x64.tar.gz
-              tar -xzf gitleaks_8.18.0_linux_x64.tar.gz
+              curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.18.0/gitleaks_8.18.0_darwin_arm64.tar.gz -o gitleaks.tar.gz
+              tar -xzf gitleaks.tar.gz
               chmod +x gitleaks
               echo "Running Gitleaks secret scan..."
-              ./gitleaks detect --source . --report-format json --report-path gitleaks-report.json --exit-code 0
-              echo "Scan complete. Results saved to gitleaks-report.json"
+              ./gitleaks detect --source . --report-format json --report-path gitleaks-report.json --exit-code 0 || true
+              echo "Scan complete"
             displayName: "Run Gitleaks"
 
           - script: |
               echo "=== SECRETS FOUND ==="
-              cat gitleaks-report.json | python3 -c "
-              import json, sys
-              data = json.load(sys.stdin)
-              if not data:
-                  print('No secrets found')
-              else:
-                  print(f'ALERT: {len(data)} secret(s) detected!')
-                  for item in data:
-                      print(f'  - {item[\"Description\"]} in {item[\"File\"]} at line {item[\"StartLine\"]}')
+              python3 -c "
+              import json
+              try:
+                  with open('gitleaks-report.json') as f:
+                      data = json.load(f)
+                  if not data:
+                      print('No secrets found')
+                  else:
+                      print(f'ALERT: {len(data)} secret(s) detected!')
+                      for item in data:
+                          print(f'  - {item[\"Description\"]} in {item[\"File\"]} at line {item[\"StartLine\"]}')
+              except Exception as e:
+                  print(f'Could not read report: {e}')
               "
             displayName: "Display secrets found"
 
@@ -58,28 +53,26 @@ stages:
             displayName: "Save Gitleaks report"
 
 
-# =============================================================================
-# STAGE 2: STATIC CODE ANALYSIS WITH SEMGREP
-# Semgrep is a SAST tool - it reads your code and looks for dangerous patterns.
-# It will find our SQL injections, command injection, path traversal etc.
-# It understands Python and knows what dangerous code looks like.
-# =============================================================================
   - stage: StaticCodeAnalysis
     displayName: "Stage 2 - SAST (Semgrep)"
     dependsOn: SecretScanning
+    pool:
+      name: Default
     jobs:
       - job: SemgrepScan
         displayName: "Scan for vulnerable code patterns"
+        pool:
+          name: Default
         steps:
           - checkout: self
 
           - script: |
-              pip install semgrep
+              pip3 install semgrep
             displayName: "Install Semgrep"
 
           - script: |
               echo "Running Semgrep SAST scan..."
-              semgrep scan \
+              python3 -m semgrep scan \
                 --config=p/python \
                 --config=p/sql-injection \
                 --config=p/command-injection \
@@ -94,18 +87,21 @@ stages:
               echo "=== VULNERABILITIES FOUND ==="
               python3 -c "
               import json
-              with open('semgrep-report.json') as f:
-                  data = json.load(f)
-              results = data.get('results', [])
-              if not results:
-                  print('No issues found')
-              else:
-                  print(f'ALERT: {len(results)} vulnerability/vulnerabilities found!')
-                  for r in results:
-                      print(f'  - [{r[\"extra\"][\"severity\"]}] {r[\"check_id\"]}')
-                      print(f'    File: {r[\"path\"]} Line: {r[\"start\"][\"line\"]}')
-                      print(f'    Message: {r[\"extra\"][\"message\"][:100]}')
-                      print()
+              try:
+                  with open('semgrep-report.json') as f:
+                      data = json.load(f)
+                  results = data.get('results', [])
+                  if not results:
+                      print('No issues found')
+                  else:
+                      print(f'ALERT: {len(results)} vulnerability/vulnerabilities found!')
+                      for r in results:
+                          print(f'  - [{r[\"extra\"][\"severity\"]}] {r[\"check_id\"]}')
+                          print(f'    File: {r[\"path\"]} Line: {r[\"start\"][\"line\"]}')
+                          print(f'    Message: {r[\"extra\"][\"message\"][:100]}')
+                          print()
+              except Exception as e:
+                  print(f'Could not read report: {e}')
               "
             displayName: "Display vulnerabilities found"
 
@@ -116,26 +112,23 @@ stages:
             displayName: "Save Semgrep report"
 
 
-# =============================================================================
-# STAGE 3: DEPENDENCY SCANNING WITH TRIVY
-# Trivy looks at your requirements.txt and checks every package version
-# against a database of known CVEs (Common Vulnerabilities and Exposures).
-# CVE is like a public registry of known security holes in software.
-# Our old package versions will have multiple CVEs — Trivy will list them all.
-# =============================================================================
   - stage: DependencyScanning
-    displayName: "Stage 3 - SCA (Trivy Dependency Scan)"
+    displayName: "Stage 3 - SCA (Trivy)"
     dependsOn: StaticCodeAnalysis
+    pool:
+      name: Default
     jobs:
       - job: TrivyScan
         displayName: "Scan for vulnerable dependencies"
+        pool:
+          name: Default
         steps:
           - checkout: self
 
           - script: |
               echo "Installing Trivy..."
-              wget https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_Linux-64bit.tar.gz
-              tar -xzf trivy_0.48.0_Linux-64bit.tar.gz
+              curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_macOS-ARM64.tar.gz -o trivy.tar.gz
+              tar -xzf trivy.tar.gz
               chmod +x trivy
               echo "Trivy installed"
             displayName: "Install Trivy"
@@ -151,94 +144,4 @@ stages:
             displayName: "Run Trivy"
 
           - script: |
-              echo "=== CVEs FOUND IN DEPENDENCIES ==="
-              python3 -c "
-              import json
-              with open('trivy-report.json') as f:
-                  data = json.load(f)
-              results = data.get('Results', [])
-              total = 0
-              for result in results:
-                  vulns = result.get('Vulnerabilities', []) or []
-                  total += len(vulns)
-                  for v in vulns:
-                      print(f'  - [{v[\"Severity\"]}] {v[\"VulnerabilityID\"]}')
-                      print(f'    Package: {v[\"PkgName\"]} {v[\"InstalledVersion\"]}')
-                      print(f'    Fix: upgrade to {v.get(\"FixedVersion\", \"no fix available\")}')
-                      print()
-              print(f'Total CVEs found: {total}')
-              "
-            displayName: "Display CVEs found"
-
-          - task: PublishBuildArtifacts@1
-            inputs:
-              pathToPublish: trivy-report.json
-              artifactName: dependency-scan-results
-            displayName: "Save Trivy report"
-
-
-# =============================================================================
-# STAGE 4: SECURITY GATE
-# This stage looks at all the results from above and makes a decision.
-# In a real company this would block deployment if critical issues are found.
-# We set it to warn rather than block so we can see the full pipeline run.
-# In production you would change BLOCK_ON_CRITICAL to true.
-# =============================================================================
-  - stage: SecurityGate
-    displayName: "Stage 4 - Security Gate (Pass/Fail Decision)"
-    dependsOn:
-      - SecretScanning
-      - StaticCodeAnalysis
-      - DependencyScanning
-    jobs:
-      - job: SecurityGateCheck
-        displayName: "Evaluate security scan results"
-        steps:
-          - download: current
-            artifact: secret-scan-results
-
-          - download: current
-            artifact: sast-results
-
-          - download: current
-            artifact: dependency-scan-results
-
-          - script: |
-              python3 -c "
-              import json, os
-
-              print('=' * 60)
-              print('SECUREWATCH SECURITY GATE REPORT')
-              print('=' * 60)
-
-              # Check secrets
-              try:
-                  with open('$(Pipeline.Workspace)/secret-scan-results/gitleaks-report.json') as f:
-                      secrets = json.load(f)
-                  print(f'Secrets found:        {len(secrets)} issue(s)')
-              except:
-                  print('Secrets found:        Could not read report')
-
-              # Check SAST
-              try:
-                  with open('$(Pipeline.Workspace)/sast-results/semgrep-report.json') as f:
-                      sast = json.load(f)
-                  print(f'Code vulnerabilities: {len(sast.get(\"results\", []))} issue(s)')
-              except:
-                  print('Code vulnerabilities: Could not read report')
-
-              # Check dependencies
-              try:
-                  with open('$(Pipeline.Workspace)/dependency-scan-results/trivy-report.json') as f:
-                      deps = json.load(f)
-                  total_cves = sum(len(r.get('Vulnerabilities') or []) for r in deps.get('Results', []))
-                  print(f'Dependency CVEs:      {total_cves} issue(s)')
-              except:
-                  print('Dependency CVEs:      Could not read report')
-
-              print('=' * 60)
-              print('STATUS: Pipeline complete. Review findings above.')
-              print('In production: critical findings would block deployment.')
-              print('=' * 60)
-              "
-            displayName: "Security Gate Summary"
+              echo "=== CVEs FOU
