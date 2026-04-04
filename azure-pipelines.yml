@@ -93,3 +93,66 @@ stages:
       - job: TrivyScan
         displayName: "Scan for vulnerable dependencies"
         pool:
+          name: Default
+        steps:
+          - checkout: self
+
+          - script: |
+              echo "Installing Trivy..."
+              curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_macOS-ARM64.tar.gz -o trivy.tar.gz
+              tar -xzf trivy.tar.gz
+              chmod +x trivy
+              echo "Trivy installed"
+            displayName: "Install Trivy"
+
+          - script: |
+              echo "Running Trivy dependency scan..."
+              ./trivy fs \
+                --scanners vuln \
+                --format json \
+                --output trivy-report.json \
+                ./vulnerable-app/requirements.txt || true
+              echo "Trivy scan complete"
+              ls -la trivy-report.json || echo "Report not found"
+            displayName: "Run Trivy"
+
+          - script: |
+              echo "=== CVEs FOUND ==="
+              python3 parse-trivy.py
+            displayName: "Display CVEs found"
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: trivy-report.json
+              artifactName: dependency-scan-results
+            displayName: "Save Trivy report"
+
+
+  - stage: SecurityGate
+    displayName: "Stage 4 - Security Gate"
+    dependsOn:
+      - SecretScanning
+      - StaticCodeAnalysis
+      - DependencyScanning
+    pool:
+      name: Default
+    jobs:
+      - job: SecurityGateCheck
+        displayName: "Evaluate security scan results"
+        pool:
+          name: Default
+        steps:
+          - download: current
+            artifact: secret-scan-results
+
+          - download: current
+            artifact: sast-results
+
+          - download: current
+            artifact: dependency-scan-results
+
+          - script: |
+              python3 security-gate.py
+            env:
+              PIPELINE_WORKSPACE: $(Pipeline.Workspace)
+            displayName: "Security Gate Summary"
