@@ -98,11 +98,17 @@ stages:
           - checkout: self
 
           - script: |
-              echo "Installing Trivy..."
-              curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_macOS-ARM64.tar.gz -o trivy.tar.gz
+              echo "Downloading Trivy..."
+              curl -sSL "https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_macOS-ARM64.tar.gz" -o trivy.tar.gz -L --fail
+              echo "File size:"
+              ls -lh trivy.tar.gz
+              echo "Extracting..."
               tar -xzf trivy.tar.gz
+              echo "Files after extract:"
+              ls -la
               chmod +x trivy
-              echo "Trivy installed"
+              echo "Trivy version:"
+              ./trivy --version
             displayName: "Install Trivy"
 
           - script: |
