@@ -92,3 +92,4 @@ stages:
     jobs:
       - job: TrivyScan
         displayName: "Scan for vulnerable dependencies"
+        pool:
