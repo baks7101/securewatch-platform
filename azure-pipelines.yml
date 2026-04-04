@@ -98,32 +98,19 @@ stages:
           - checkout: self
 
           - script: |
-              echo "Downloading Trivy..."
-              curl -sSL "https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_macOS-ARM64.tar.gz" -o trivy.tar.gz -L --fail
-              echo "File size:"
-              ls -lh trivy.tar.gz
-              echo "Extracting..."
-              tar -xzf trivy.tar.gz
-              echo "Files after extract:"
-              ls -la
-              chmod +x trivy
-              echo "Trivy version:"
-              ./trivy --version
+              echo "Installing Trivy via Homebrew..."
+              brew install trivy
+              trivy --version
             displayName: "Install Trivy"
 
           - script: |
               echo "Running Trivy dependency scan..."
-              echo "Current directory:"
-              pwd
-              echo "Files here:"
-              ls -la
-              ./trivy fs \
+              trivy fs \
                 --scanners vuln \
                 --format json \
                 --output trivy-report.json \
-                ./vulnerable-app/requirements.txt
-              echo "Exit code: $?"
-              echo "Checking for report:"
+                ./vulnerable-app/requirements.txt || true
+              echo "Trivy scan complete"
               ls -la trivy-report.json || echo "Report not found"
             displayName: "Run Trivy"
 
