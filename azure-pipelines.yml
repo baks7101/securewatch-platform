@@ -107,12 +107,17 @@ stages:
 
           - script: |
               echo "Running Trivy dependency scan..."
+              echo "Current directory:"
+              pwd
+              echo "Files here:"
+              ls -la
               ./trivy fs \
                 --scanners vuln \
                 --format json \
                 --output trivy-report.json \
-                ./vulnerable-app/requirements.txt || true
-              echo "Trivy scan complete"
+                ./vulnerable-app/requirements.txt
+              echo "Exit code: $?"
+              echo "Checking for report:"
               ls -la trivy-report.json || echo "Report not found"
             displayName: "Run Trivy"
 
