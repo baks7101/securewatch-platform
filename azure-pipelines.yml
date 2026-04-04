@@ -78,7 +78,7 @@ stages:
             displayName: "Display vulnerabilities found"
 
           - task: PublishBuildArtifacts@1
-            inputs
+            inputs:
               pathToPublish: semgrep-report.json
               artifactName: sast-results
             displayName: "Save Semgrep report"
