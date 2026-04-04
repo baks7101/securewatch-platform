@@ -23,14 +23,3 @@ try:
 except Exception as e:
     print(f'Could not read report: {e}')
     sys.exit(0)
-```
-
-Press **Command + S**.
-
----
-
-## Step 2 — Create a separate Python script for the Security Gate report
-
-In VS Code, right-click on the `securewatch` folder, click **New File** and name it:
-```
-security-gate.py
