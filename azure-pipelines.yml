@@ -29,21 +29,7 @@ stages:
             displayName: "Run Gitleaks"
 
           - script: |
-              echo "=== SECRETS FOUND ==="
-              python3 -c "
-              import json
-              try:
-                  with open('gitleaks-report.json') as f:
-                      data = json.load(f)
-                  if not data:
-                      print('No secrets found')
-                  else:
-                      print(f'ALERT: {len(data)} secret(s) detected!')
-                      for item in data:
-                          print(f'  - {item[\"Description\"]} in {item[\"File\"]} at line {item[\"StartLine\"]}')
-              except Exception as e:
-                  print(f'Could not read report: {e}')
-              "
+              python3 parse-gitleaks.py
             displayName: "Display secrets found"
 
           - task: PublishBuildArtifacts@1
@@ -68,6 +54,8 @@ stages:
 
           - script: |
               pip3 install semgrep
+              which semgrep
+              semgrep --version
             displayName: "Install Semgrep"
 
           - script: |
@@ -86,29 +74,11 @@ stages:
             displayName: "Run Semgrep"
 
           - script: |
-              echo "=== VULNERABILITIES FOUND ==="
-              python3 -c "
-              import json
-              try:
-                  with open('semgrep-report.json') as f:
-                      data = json.load(f)
-                  results = data.get('results', [])
-                  if not results:
-                      print('No issues found')
-                  else:
-                      print(f'ALERT: {len(results)} vulnerability/vulnerabilities found!')
-                      for r in results:
-                          print(f'  - [{r[\"extra\"][\"severity\"]}] {r[\"check_id\"]}')
-                          print(f'    File: {r[\"path\"]} Line: {r[\"start\"][\"line\"]}')
-                          print(f'    Message: {r[\"extra\"][\"message\"][:100]}')
-                          print()
-              except Exception as e:
-                  print(f'Could not read report: {e}')
-              "
+              python3 parse-semgrep.py
             displayName: "Display vulnerabilities found"
 
           - task: PublishBuildArtifacts@1
-            inputs:
+            inputs
               pathToPublish: semgrep-report.json
               artifactName: sast-results
             displayName: "Save Semgrep report"
@@ -122,28 +92,3 @@ stages:
     jobs:
       - job: TrivyScan
         displayName: "Scan for vulnerable dependencies"
-        pool:
-          name: Default
-        steps:
-          - checkout: self
-
-          - script: |
-              echo "Installing Trivy..."
-              curl -sSL https://github.com/aquasecurity/trivy/releases/download/v0.48.0/trivy_0.48.0_macOS-ARM64.tar.gz -o trivy.tar.gz
-              tar -xzf trivy.tar.gz
-              chmod +x trivy
-              echo "Trivy installed"
-            displayName: "Install Trivy"
-
-          - script: |
-              echo "Running Trivy dependency scan..."
-              ./trivy fs \
-                --scanners vuln \
-                --format json \
-                --output trivy-report.json \
-                ./vulnerable-app/requirements.txt || true
-              echo "Trivy scan complete"
-            displayName: "Run Trivy"
-
-          - script: |
-              echo "=== CVEs FOU
