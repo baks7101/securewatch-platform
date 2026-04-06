@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: securewatch-elasticsearch
+    environment:
+      - node.name=securewatch-node
+      - cluster.name=securewatch-cluster
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=SecureWatch2024!
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - securewatch-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s -u elastic:SecureWatch2024! http://localhost:9200/_cluster/health | grep -q 'green\\|yellow'"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: securewatch-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_SERVICEACCOUNTTOKEN=AAEAAWVsYXN0aWMva2liYW5hL3NlY3VyZXdhdGNoLXRva2VuOllVSGx0cWFzUTNlME9iaGF0ckdjMnc
+      - xpack.security.enabled=false
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=a7a6311933d3503b89bc2dbc36572c33a6c10925682e591bffcab6911c06786d
+    ports:
+      - "5601:5601"
+    networks:
+      - securewatch-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    container_name: securewatch-logstash
+    environment:
+      - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
+    volumes:
+      - ./logstash/pipeline/securewatch.conf:/usr/share/logstash/pipeline/securewatch.conf
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./sample-logs:/logs
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    networks:
+      - securewatch-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+volumes:
+  elasticsearch_data:
+    driver: local
+
+networks:
+  securewatch-network:
+    driver: bridge

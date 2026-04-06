@@ -1,0 +1,12 @@
+2024-01-15T10:30:00 WARNING SQL injection attempt detected: GET /login?username=' OR '1'='1&password=anything from 192.168.1.100
+2024-01-15T10:30:05 WARNING SQL injection attempt: query = SELECT * FROM users WHERE username='' OR '1'='1' AND password='anything'
+2024-01-15T10:31:00 WARNING Path traversal attempt: GET /read-file?filename=../../etc/passwd from 192.168.1.100
+2024-01-15T10:31:30 WARNING Path traversal attempt: GET /read-file?filename=../../../etc/shadow from 192.168.1.100
+2024-01-15T10:32:00 WARNING Command injection attempt: GET /ping?host=localhost;cat /etc/passwd from 192.168.1.100
+2024-01-15T10:32:15 WARNING Command injection attempt: GET /ping?host=localhost && whoami from 192.168.1.100
+2024-01-15T10:33:00 INFO Unauthenticated access to patient records: GET /patients - returned 3 records including NHS numbers
+2024-01-15T10:33:30 INFO Unauthenticated access to patient records: GET /patient?id=1 UNION SELECT username,password,role,null,null FROM users--
+2024-01-15T10:34:00 WARNING Multiple failed login attempts from 192.168.1.100 - possible brute force attack
+2024-01-15T10:34:30 CRITICAL Sensitive data exposed: NHS numbers and diagnoses returned without authentication
+2024-01-15T10:35:00 WARNING Hardcoded AWS credentials detected in application source code
+2024-01-15T10:35:30 CRITICAL Insecure YAML deserialisation endpoint accessed: POST /import-config
