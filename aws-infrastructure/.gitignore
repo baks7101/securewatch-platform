@@ -1,0 +1,7 @@
+# Terraform state files contain sensitive data — NEVER commit these
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+crash.log
