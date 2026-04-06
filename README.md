@@ -10,36 +10,26 @@
 
 ## Overview
 
-SecureWatch is a comprehensive security engineering portfolio project simulating 
-a real-world healthcare security environment. It demonstrates end-to-end security 
-engineering capability across application security, pipeline security, cloud 
+SecureWatch is a comprehensive security engineering portfolio project simulating
+a real-world healthcare security environment. It demonstrates end-to-end security
+engineering capability across application security, pipeline security, cloud
 security, and security operations.
 
-The project uses a deliberately vulnerable healthcare application (MediCare Portal) 
-as its target, demonstrating the full security engineering lifecycle from vulnerability 
+The project uses a deliberately vulnerable healthcare application (MediCare Portal)
+as its target, demonstrating the full security engineering lifecycle from vulnerability
 discovery through to SIEM detection and formal documentation.
 
 ---
 
 ## Architecture
-┌─────────────────────────────────────────────────────────┐
-│                  SecureWatch Platform                    │
-├─────────────────┬───────────────────┬───────────────────┤
-│  Module 2       │  Module 3         │  Module 4         │
-│  MediCare       │  Azure DevOps     │  AWS Security     │
-│  Portal         │  Pipeline         │  Infrastructure   │
-│  (Vulnerable    │  ├─ Gitleaks      │  ├─ CloudTrail    │
-│   Flask App)    │  ├─ Semgrep SAST  │  ├─ GuardDuty     │
-│  8 CVEs         │  ├─ Trivy SCA     │  ├─ S3 Encrypted  │
-│  intentional    │  └─ Security Gate │  └─ SNS Alerts    │
-├─────────────────┴───────────────────┴───────────────────┤
-│  Module 5: ELK SIEM                                      │
-│  Elasticsearch → Logstash → Kibana                       │
-│  MediCare SOC Dashboard | MITRE ATT&CK Mapping           │
-├─────────────────────────────────────────────────────────┤
-│  Module 6: Security Documentation                        │
-│  VAR | STRIDE | Risk Register | IS Policy | IR Runbook   │
-└─────────────────────────────────────────────────────────┘
+
+| Layer | Component | Tools |
+|---|---|---|
+| **Application** | MediCare Portal — deliberately vulnerable Flask app | Python, Flask, SQLite |
+| **Pipeline Security** | Azure DevOps 4-stage security pipeline | Gitleaks, Semgrep, Trivy, Security Gate |
+| **Cloud Security** | AWS security infrastructure as code | CloudTrail, GuardDuty, S3, SNS, Terraform |
+| **SIEM** | ELK security operations centre | Elasticsearch, Logstash, Kibana |
+| **Documentation** | Full security programme | VAR, STRIDE, Risk Register, IS Policy, IR Runbook |
 
 ---
 
@@ -65,7 +55,7 @@ A Flask-based healthcare patient portal containing 8 intentional vulnerabilities
 4-stage automated security pipeline running on every code push:
 
 - **Stage 1:** Gitleaks secret scanning — detected 5 hardcoded secrets
-- **Stage 2:** Semgrep SAST — detected 12 code vulnerabilities  
+- **Stage 2:** Semgrep SAST — detected 12 code vulnerabilities
 - **Stage 3:** Trivy SCA — detected 8 CVEs in dependencies
 - **Stage 4:** Security Gate — consolidated report with pass/fail decision
 
@@ -86,26 +76,21 @@ All resources provisioned as Infrastructure as Code:
 Production-grade Security Information and Event Management system:
 
 - **Elasticsearch 8.11** — stores and indexes all security events
-- **Logstash** — ingests CloudTrail and application logs with 
-  custom parsing rules
+- **Logstash** — ingests CloudTrail and application logs with custom parsing rules
 - **Kibana** — MediCare Security Operations Centre dashboard
 - **MITRE ATT&CK mapping** — all attacks tagged with technique IDs
-- **Alert rules** — SQL injection, path traversal, command injection, 
-  credential exposure, suspicious AWS API calls
+- **Alert rules** — SQL injection, path traversal, command injection, credential exposure, suspicious AWS API calls
 
 ---
 
 ### Module 6 — Security Documentation
 Professional security documentation suite:
 
-- **Vulnerability Assessment Report** — 8 findings with CVSS scores, 
-  PoC evidence, and remediation guidance
-- **STRIDE Threat Model** — 18 threats across all categories with 
-  MITRE ATT&CK mapping
+- **Vulnerability Assessment Report** — 8 findings with CVSS scores, PoC evidence, and remediation guidance
+- **STRIDE Threat Model** — 18 threats across all categories with MITRE ATT&CK mapping
 - **Risk Register** — ISO 27001-aligned with inherent/residual scoring
 - **IS Security Policy** — NHS DSP Toolkit and GDPR Article 32 aligned
-- **Incident Response Runbook** — SQL injection, credential exposure, 
-  and GuardDuty finding playbooks with GDPR breach notification tree
+- **Incident Response Runbook** — SQL injection, credential exposure, and GuardDuty finding playbooks with GDPR breach notification tree
 
 ---
 
@@ -137,6 +122,8 @@ Professional security documentation suite:
 ---
 
 ## Author
-**Bakary Sillah** — Security Engineer  
-CompTIA Security+ | AWS CCP | Terraform Associate  
+**Bakary Sillah** — Security Engineer
+
+CompTIA Security+ | AWS CCP | Terraform Associate
+
 [LinkedIn](https://linkedin.com) | [Email](mailto:bsillah15@gmail.com)
