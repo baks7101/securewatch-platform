@@ -25,7 +25,7 @@ discovery through to SIEM detection and formal documentation.
 
 ## Architecture
 
-![SecureWatch Architecture](./architecture-diagram.svg)
+![SecureWatch Architecture](https://raw.githubusercontent.com/baks7101/securewatch-platform/master/architecture-diagram.svg)
 
 ---
 
