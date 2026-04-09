@@ -1,100 +1,115 @@
-<svg width="100%" viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg">
+<svg width="680" height="720" viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg" style="background:#ffffff">
+
 <defs>
 <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-<path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 1L8 5L2 9" fill="none" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </marker>
 </defs>
 
-<!-- Header boxes -->
-<rect x="260" y="20" width="160" height="44" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="340" y="42" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Developer</text>
+<!-- Developer -->
+<rect x="260" y="20" width="160" height="40" rx="8" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="13" font-weight="bold" x="340" y="45" text-anchor="middle" fill="#1f2937">Developer</text>
 
-<line x1="340" y1="64" x2="340" y2="100" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
-<text font-family="sans-serif" font-size="12" x="355" y="86" dominant-baseline="central" fill="#5F5E5A">git push</text>
+<!-- Arrow down -->
+<line x1="340" y1="60" x2="340" y2="96" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text font-family="Arial,sans-serif" font-size="11" x="350" y="82" fill="#6b7280">git push</text>
 
-<!-- Azure DevOps container -->
-<rect x="40" y="100" width="600" height="130" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="340" y="124" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Azure DevOps — security pipeline</text>
+<!-- Azure DevOps outer box -->
+<rect x="40" y="100" width="600" height="132" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+<text font-family="Arial,sans-serif" font-size="13" font-weight="bold" x="340" y="122" text-anchor="middle" fill="#1d4ed8">Azure DevOps — security pipeline</text>
 
-<rect x="60" y="138" width="124" height="76" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="122" y="163" text-anchor="middle" dominant-baseline="central" fill="#085041">Stage 1</text>
-<text font-family="sans-serif" font-size="12" x="122" y="182" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Gitleaks</text>
-<text font-family="sans-serif" font-size="12" x="122" y="198" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Secret scanning</text>
+<!-- Stage 1 -->
+<rect x="58" y="132" width="126" height="84" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="12" font-weight="bold" x="121" y="155" text-anchor="middle" fill="#065f46">Stage 1</text>
+<text font-family="Arial,sans-serif" font-size="11" x="121" y="173" text-anchor="middle" fill="#047857">Gitleaks</text>
+<text font-family="Arial,sans-serif" font-size="11" x="121" y="190" text-anchor="middle" fill="#047857">Secret scanning</text>
+<text font-family="Arial,sans-serif" font-size="11" x="121" y="207" text-anchor="middle" fill="#047857">5 secrets found</text>
 
-<rect x="200" y="138" width="124" height="76" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="262" y="163" text-anchor="middle" dominant-baseline="central" fill="#085041">Stage 2</text>
-<text font-family="sans-serif" font-size="12" x="262" y="182" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Semgrep</text>
-<text font-family="sans-serif" font-size="12" x="262" y="198" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">SAST scanning</text>
+<!-- Stage 2 -->
+<rect x="198" y="132" width="126" height="84" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="12" font-weight="bold" x="261" y="155" text-anchor="middle" fill="#065f46">Stage 2</text>
+<text font-family="Arial,sans-serif" font-size="11" x="261" y="173" text-anchor="middle" fill="#047857">Semgrep SAST</text>
+<text font-family="Arial,sans-serif" font-size="11" x="261" y="190" text-anchor="middle" fill="#047857">Code analysis</text>
+<text font-family="Arial,sans-serif" font-size="11" x="261" y="207" text-anchor="middle" fill="#047857">12 vulns found</text>
 
-<rect x="340" y="138" width="124" height="76" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="402" y="163" text-anchor="middle" dominant-baseline="central" fill="#085041">Stage 3</text>
-<text font-family="sans-serif" font-size="12" x="402" y="182" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Trivy</text>
-<text font-family="sans-serif" font-size="12" x="402" y="198" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">SCA / CVEs</text>
+<!-- Stage 3 -->
+<rect x="338" y="132" width="126" height="84" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="12" font-weight="bold" x="401" y="155" text-anchor="middle" fill="#065f46">Stage 3</text>
+<text font-family="Arial,sans-serif" font-size="11" x="401" y="173" text-anchor="middle" fill="#047857">Trivy SCA</text>
+<text font-family="Arial,sans-serif" font-size="11" x="401" y="190" text-anchor="middle" fill="#047857">Dependency scan</text>
+<text font-family="Arial,sans-serif" font-size="11" x="401" y="207" text-anchor="middle" fill="#047857">8 CVEs found</text>
 
-<rect x="480" y="138" width="140" height="76" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="550" y="163" text-anchor="middle" dominant-baseline="central" fill="#085041">Stage 4</text>
-<text font-family="sans-serif" font-size="12" x="550" y="182" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Security gate</text>
-<text font-family="sans-serif" font-size="12" x="550" y="198" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Pass / fail</text>
+<!-- Stage 4 -->
+<rect x="478" y="132" width="142" height="84" rx="6" fill="#d1fae5" stroke="#059669" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="12" font-weight="bold" x="549" y="155" text-anchor="middle" fill="#065f46">Stage 4</text>
+<text font-family="Arial,sans-serif" font-size="11" x="549" y="173" text-anchor="middle" fill="#047857">Security gate</text>
+<text font-family="Arial,sans-serif" font-size="11" x="549" y="190" text-anchor="middle" fill="#047857">Pass / fail</text>
+<text font-family="Arial,sans-serif" font-size="11" x="549" y="207" text-anchor="middle" fill="#047857">Block critical</text>
 
-<!-- Arrows to layer 3 -->
-<line x1="200" y1="230" x2="160" y2="290" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
-<line x1="480" y1="230" x2="520" y2="290" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
+<!-- Arrows to middle layer -->
+<line x1="200" y1="232" x2="155" y2="288" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="480" y1="232" x2="525" y2="288" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
 
 <!-- MediCare Portal -->
-<rect x="40" y="290" width="240" height="130" rx="12" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="160" y="314" text-anchor="middle" dominant-baseline="central" fill="#712B13">MediCare Portal</text>
-<text font-family="sans-serif" font-size="12" x="160" y="334" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Deliberately vulnerable app</text>
+<rect x="40" y="292" width="240" height="132" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+<text font-family="Arial,sans-serif" font-size="13" font-weight="bold" x="160" y="316" text-anchor="middle" fill="#9a3412">MediCare Portal</text>
+<text font-family="Arial,sans-serif" font-size="11" x="160" y="334" text-anchor="middle" fill="#c2410c">Deliberately vulnerable app</text>
 
-<rect x="56" y="346" width="96" height="60" rx="8" fill="#F4C0D1" stroke="#993556" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="12" x="104" y="368" text-anchor="middle" dominant-baseline="central" fill="#72243E">SQL injection</text>
-<text font-family="sans-serif" font-size="12" x="104" y="386" text-anchor="middle" dominant-baseline="central" fill="#72243E">Path traversal</text>
-<text font-family="sans-serif" font-size="12" x="104" y="402" text-anchor="middle" dominant-baseline="central" fill="#72243E">Cmd injection</text>
+<rect x="56" y="344" width="100" height="66" rx="6" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="11" x="106" y="364" text-anchor="middle" fill="#991b1b">SQL injection</text>
+<text font-family="Arial,sans-serif" font-size="11" x="106" y="381" text-anchor="middle" fill="#991b1b">Path traversal</text>
+<text font-family="Arial,sans-serif" font-size="11" x="106" y="398" text-anchor="middle" fill="#991b1b">Cmd injection</text>
 
-<rect x="168" y="346" width="96" height="60" rx="8" fill="#F4C0D1" stroke="#993556" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="12" x="216" y="368" text-anchor="middle" dominant-baseline="central" fill="#72243E">Hardcoded keys</text>
-<text font-family="sans-serif" font-size="12" x="216" y="386" text-anchor="middle" dominant-baseline="central" fill="#72243E">Data exposure</text>
-<text font-family="sans-serif" font-size="12" x="216" y="402" text-anchor="middle" dominant-baseline="central" fill="#72243E">8 CVEs total</text>
+<rect x="168" y="344" width="100" height="66" rx="6" fill="#fecaca" stroke="#dc2626" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="11" x="218" y="364" text-anchor="middle" fill="#991b1b">Hardcoded keys</text>
+<text font-family="Arial,sans-serif" font-size="11" x="218" y="381" text-anchor="middle" fill="#991b1b">Data exposure</text>
+<text font-family="Arial,sans-serif" font-size="11" x="218" y="398" text-anchor="middle" fill="#991b1b">8 CVEs total</text>
 
 <!-- AWS Infrastructure -->
-<rect x="400" y="290" width="240" height="130" rx="12" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="520" y="314" text-anchor="middle" dominant-baseline="central" fill="#633806">AWS — eu-west-2 London</text>
-<text font-family="sans-serif" font-size="12" x="520" y="334" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Terraform IaC</text>
+<rect x="400" y="292" width="240" height="132" rx="10" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+<text font-family="Arial,sans-serif" font-size="13" font-weight="bold" x="520" y="316" text-anchor="middle" fill="#92400e">AWS — eu-west-2 London</text>
+<text font-family="Arial,sans-serif" font-size="11" x="520" y="334" text-anchor="middle" fill="#b45309">Terraform IaC</text>
 
-<rect x="416" y="346" width="96" height="60" rx="8" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="12" x="464" y="368" text-anchor="middle" dominant-baseline="central" fill="#27500A">CloudTrail</text>
-<text font-family="sans-serif" font-size="12" x="464" y="386" text-anchor="middle" dominant-baseline="central" fill="#27500A">Audit logging</text>
-<text font-family="sans-serif" font-size="12" x="464" y="402" text-anchor="middle" dominant-baseline="central" fill="#27500A">All regions</text>
+<rect x="416" y="344" width="100" height="66" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="11" x="466" y="364" text-anchor="middle" fill="#14532d">CloudTrail</text>
+<text font-family="Arial,sans-serif" font-size="11" x="466" y="381" text-anchor="middle" fill="#14532d">Audit logging</text>
+<text font-family="Arial,sans-serif" font-size="11" x="466" y="398" text-anchor="middle" fill="#14532d">All regions</text>
 
-<rect x="528" y="346" width="96" height="60" rx="8" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="12" x="576" y="368" text-anchor="middle" dominant-baseline="central" fill="#27500A">GuardDuty</text>
-<text font-family="sans-serif" font-size="12" x="576" y="386" text-anchor="middle" dominant-baseline="central" fill="#27500A">Threat detect</text>
-<text font-family="sans-serif" font-size="12" x="576" y="402" text-anchor="middle" dominant-baseline="central" fill="#27500A">ML-based</text>
+<rect x="528" y="344" width="100" height="66" rx="6" fill="#bbf7d0" stroke="#16a34a" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="11" x="578" y="364" text-anchor="middle" fill="#14532d">GuardDuty</text>
+<text font-family="Arial,sans-serif" font-size="11" x="578" y="381" text-anchor="middle" fill="#14532d">Threat detect</text>
+<text font-family="Arial,sans-serif" font-size="11" x="578" y="398" text-anchor="middle" fill="#14532d">ML-based</text>
 
 <!-- Arrows to ELK -->
-<line x1="160" y1="420" x2="260" y2="480" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
-<line x1="520" y1="420" x2="420" y2="480" stroke="#888780" stroke-width="1.5" marker-end="url(#arrow)"/>
-<text font-family="sans-serif" font-size="12" x="195" y="458" dominant-baseline="central" fill="#5F5E5A">app logs</text>
-<text font-family="sans-serif" font-size="12" x="425" y="458" dominant-baseline="central" fill="#5F5E5A">CloudTrail logs</text>
+<line x1="160" y1="424" x2="255" y2="480" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="520" y1="424" x2="425" y2="480" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text font-family="Arial,sans-serif" font-size="11" x="185" y="458" fill="#6b7280">app logs</text>
+<text font-family="Arial,sans-serif" font-size="11" x="415" y="458" fill="#6b7280">CloudTrail logs</text>
 
 <!-- ELK SIEM -->
-<rect x="40" y="480" width="600" height="130" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="340" y="504" text-anchor="middle" dominant-baseline="central" fill="#3C3489">ELK SIEM — MediCare SOC</text>
+<rect x="40" y="484" width="600" height="132" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+<text font-family="Arial,sans-serif" font-size="13" font-weight="bold" x="340" y="506" text-anchor="middle" fill="#4c1d95">ELK SIEM — MediCare SOC</text>
 
-<rect x="60" y="518" width="164" height="76" rx="8" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="142" y="543" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Elasticsearch</text>
-<text font-family="sans-serif" font-size="12" x="142" y="562" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Log storage</text>
-<text font-family="sans-serif" font-size="12" x="142" y="578" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Search engine</text>
+<rect x="58" y="516" width="168" height="84" rx="6" fill="#c7d2fe" stroke="#4f46e5" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="12" font-weight="bold" x="142" y="539" text-anchor="middle" fill="#312e81">Elasticsearch</text>
+<text font-family="Arial,sans-serif" font-size="11" x="142" y="557" text-anchor="middle" fill="#3730a3">Log storage</text>
+<text font-family="Arial,sans-serif" font-size="11" x="142" y="574" text-anchor="middle" fill="#3730a3">Search engine</text>
+<text font-family="Arial,sans-serif" font-size="11" x="142" y="591" text-anchor="middle" fill="#3730a3">v8.11</text>
 
-<rect x="248" y="518" width="164" height="76" rx="8" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="330" y="543" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Logstash</text>
-<text font-family="sans-serif" font-size="12" x="330" y="562" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Log ingestion</text>
-<text font-family="sans-serif" font-size="12" x="330" y="578" text-anchor="middle" dominant-baseline="central" fill="#185FA5">MITRE tagging</text>
+<rect x="246" y="516" width="168" height="84" rx="6" fill="#c7d2fe" stroke="#4f46e5" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="12" font-weight="bold" x="330" y="539" text-anchor="middle" fill="#312e81">Logstash</text>
+<text font-family="Arial,sans-serif" font-size="11" x="330" y="557" text-anchor="middle" fill="#3730a3">Log ingestion</text>
+<text font-family="Arial,sans-serif" font-size="11" x="330" y="574" text-anchor="middle" fill="#3730a3">MITRE tagging</text>
+<text font-family="Arial,sans-serif" font-size="11" x="330" y="591" text-anchor="middle" fill="#3730a3">Attack detection</text>
 
-<rect x="436" y="518" width="184" height="76" rx="8" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5"/>
-<text font-family="sans-serif" font-size="14" font-weight="500" x="528" y="543" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Kibana</text>
-<text font-family="sans-serif" font-size="12" x="528" y="562" text-anchor="middle" dominant-baseline="central" fill="#185FA5">SOC dashboard</text>
-<text font-family="sans-serif" font-size="12" x="528" y="578" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Attack visualisation</text>
+<rect x="434" y="516" width="186" height="84" rx="6" fill="#c7d2fe" stroke="#4f46e5" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="12" font-weight="bold" x="527" y="539" text-anchor="middle" fill="#312e81">Kibana</text>
+<text font-family="Arial,sans-serif" font-size="11" x="527" y="557" text-anchor="middle" fill="#3730a3">SOC dashboard</text>
+<text font-family="Arial,sans-serif" font-size="11" x="527" y="574" text-anchor="middle" fill="#3730a3">Attack visualisation</text>
+<text font-family="Arial,sans-serif" font-size="11" x="527" y="591" text-anchor="middle" fill="#3730a3">MITRE ATT&amp;CK map</text>
 
 <!-- Compliance footer -->
-<text font-family="sans-serif" font-size="11" x="340" y="648" text-anchor="middle" dominant-baseline="central" fill="#888780">NHS DSP Toolkit · GDPR Article 32 · ISO 27001 · OWASP Top 10 · MITRE ATT&CK</text>
+<rect x="40" y="636" width="600" height="36" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+<text font-family="Arial,sans-serif" font-size="11" x="340" y="658" text-anchor="middle" fill="#6b7280">NHS DSP Toolkit · GDPR Article 32 · ISO 27001 · OWASP Top 10 · MITRE ATT&amp;CK</text>
+
 </svg>
