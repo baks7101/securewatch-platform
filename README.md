@@ -23,13 +23,9 @@ discovery through to SIEM detection and formal documentation.
 
 ## Architecture
 
-| Layer | Component | Tools |
-|---|---|---|
-| **Application** | MediCare Portal — deliberately vulnerable Flask app | Python, Flask, SQLite |
-| **Pipeline Security** | Azure DevOps 4-stage security pipeline | Gitleaks, Semgrep, Trivy, Security Gate |
-| **Cloud Security** | AWS security infrastructure as code | CloudTrail, GuardDuty, S3, SNS, Terraform |
-| **SIEM** | ELK security operations centre | Elasticsearch, Logstash, Kibana |
-| **Documentation** | Full security programme | VAR, STRIDE, Risk Register, IS Policy, IR Runbook |
+## Architecture
+
+![SecureWatch Architecture](./architecture-diagram.svg)
 
 ---
 
